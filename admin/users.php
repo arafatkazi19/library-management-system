@@ -75,9 +75,28 @@
 
                     <?php }
 
-                    elseif ($do == "Create") {
-                        echo "This is User Create Page";
-                    }
+                    elseif ($do == "Add") {  ?>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Add New User</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                    <form action="" method="" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" name="fullname" class="form-control" placeholder="Fullname" required="required" autocomplete="off">
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    <?php }
 
 
                     elseif ($do == "Store") {

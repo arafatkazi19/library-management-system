@@ -44,36 +44,65 @@
                     </a>
                 </li>
 
-                <li class="nav-header">MISCELLANEOUS</li>
 
+
+
+                <li class="nav-header">Library Management</li>
+                <!--     Category Starts           -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                           Category
+                            <i class="fas fa-angle-left right"></i>
+                            <!--                            <span class="badge badge-info right">6</span>-->
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="category.php?do=Manage" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage All Categories</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="category.php?do=Add" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New Category</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Category Ends  -->
+
+
+                <li class="nav-header">User Management</li>
+                <!--      User Management Starts      -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users
                             <i class="fas fa-angle-left right"></i>
-<!--                            <span class="badge badge-info right">6</span>-->
+                            <!--                            <span class="badge badge-info right">6</span>-->
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="users.php" class="nav-link">
+                            <a href="users.php?do=Manage" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Manage All Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="users.php?do=Add" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add New Users</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
-
-
-
+                <!--User Management ends-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
