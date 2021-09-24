@@ -1,0 +1,22 @@
+.tbl-action{
+    padding: 0;
+    margin: 0;
+}
+
+.tbl-action ul{
+    text-align: center;
+}
+
+.tbl-action ul li{
+    list-style: none;
+    display: inline;
+    margin: 0px 6px;
+}
+
+.tbl-action ul li .fa-edit{
+    color: yellow;
+}
+
+.tbl-action ul li .fa-trash{
+    color: red;
+}
