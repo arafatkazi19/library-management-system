@@ -1,5 +1,4 @@
 <?php include "inc/header.php"; ?>
-
 <!-- Content Wrapper Starts -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -62,26 +61,26 @@
                                     $res = mysqli_query($db,$sql);
                                     $i = 1;
                                     while ($r = mysqli_fetch_assoc($res)) {
-                                    ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $i++ ?></th>
-                                        <td><?php echo $r['category_name'] ?></td>
-                                        <td><?php echo  $r['category_description'] ?></td>
-                                        <td><?php
-                                            echo  $r['is_parent'] == 0 ? "<span class='badge badge-success'>Primary Category</span>" : "<span class='badge badge-primary'>Sub Category</span>" ?>
-                                        </td>
-                                        <td><?php
-                                            echo  $r['status'] == 1 ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Inactive</span>" ?>
-                                        </td>
-                                        <td>
-                                            <div class="tbl-action">
-                                                <ul>
-                                                    <li><a href=""><i class="fa fa-edit"></i></a></li>
-                                                    <li><a href=""><i class="fa fa-trash"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        ?>
+                                        <tr>
+                                            <th scope="row"><?php echo $i++ ?></th>
+                                            <td><?php echo $r['category_name'] ?></td>
+                                            <td><?php echo  $r['category_description'] ?></td>
+                                            <td><?php
+                                                echo  $r['is_parent'] == 0 ? "<span class='badge badge-success'>Primary Category</span>" : "<span class='badge badge-primary'>Sub Category</span>" ?>
+                                            </td>
+                                            <td><?php
+                                                echo  $r['status'] == 1 ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Inactive</span>" ?>
+                                            </td>
+                                            <td>
+                                                <div class="tbl-action">
+                                                    <ul>
+                                                        <li><a href="category.php?do=Edit&id=<?php echo $r['category_id']?>"><i class="fa fa-edit"></i></a></li>
+                                                        <li><a href=""><i class="fa fa-trash"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     <?php } ?>
                                     </tbody>
                                 </table>
@@ -137,34 +136,108 @@
 
 
                     elseif ($do == "Store") {
-                      if (isset($_POST['addcat'])){
-                          $category_name = $_POST['category_name'];
-                          $category_description = $_POST['category_description'];
-                          $is_parent = $_POST['is_parent'];
-                          $status = $_POST['status'];
+                        if (isset($_POST['addcat'])){
+                            $category_name = $_POST['category_name'];
+                            $category_description = $_POST['category_description'];
+                            $is_parent = $_POST['is_parent'];
+                            $status = $_POST['status'];
 
 
-                          $sql = "insert into category(category_name,category_description,is_parent,status)
+                            $sql = "insert into category(category_name,category_description,is_parent,status)
                                  values ('$category_name','$category_description','$is_parent','$status')";
 
-                          $res = mysqli_query($db, $sql);
+                            $res = mysqli_query($db, $sql);
 
-                          if ($res){
-                              header("Location:category.php?do=Manage");
-                          } else{
-                              die("Something went wrong". mysqli_error());
-                          }
-                      }
+                            if ($res){
+                                header("Location:category.php?do=Manage");
+                            } else{
+                                die("Something went wrong". mysqli_error());
+                            }
+                        }
                     }
 
 
                     elseif ($do == "Edit") {
-                        echo "This page will show update user info in edit form";
+                        if (isset($_GET['id'])) {
+                            $cat_id = $_GET['id'];
+                            $sql1 = "select * from category where category_id='$cat_id'";
+                            $res1 = mysqli_query($db, $sql1);
+                            $row = mysqli_fetch_assoc($res1);
+
+
+                                ?>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Edit Category</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <form action="category.php?do=Update" method="POST" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="category_name">Category Name</label>
+                                                <input value="<?php echo $row['category_name'] ?>" type="text" name="category_name" class="form-control" placeholder="Category Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="category_description">Description (Optional)</label>
+                                                <textarea id="editor" name="category_description" class="form-control"><?php echo $row['category_description'] ?></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="is_parent">Parent Category</label>
+                                                <select class="form-control" name="is_parent">
+                                                    <option value="0">Please Select Parent Category</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="form-control" name="status">
+                                                    <option value="1">Please Select Status</option>
+                                                    <option value="1" <?php echo $row['status'] == 1 ? 'selected' : ''?> >Active</option>
+                                                    <option value="2" <?php echo $row['status'] == 2 ? 'selected' : ''?> >Inactive</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input name="id" type="hidden" value="<?php echo $row['category_id']?>">
+                                                <input type="submit" name="updatecat" class="btn btn-warning" value="Update Category">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            <?php
+
+                        }
+
                     }
 
 
                     elseif ($do == "Update") {
-                        echo "This page will update user info in database";
+                        if (isset($_POST['updatecat'])){
+                            $cat_id = $_POST['id'];
+                            $category_name = $_POST['category_name'];
+                            $category_description = $_POST['category_description'];
+                            $is_parent = $_POST['is_parent'];
+                            $status = $_POST['status'];
+
+
+                            $updatecatsql = "update category set category_name='$category_name',category_description='$category_description',is_parent='$is_parent',status='$status' 
+                                    where category_id='$cat_id'";
+
+                            $updatecat = mysqli_query($db, $updatecatsql);
+
+                            if ($updatecat){
+                                header("Location:category.php?do=Manage");
+                            } else{
+                                die("Something went wrong". mysqli_error());
+                            }
+                        }
                     }
 
 
