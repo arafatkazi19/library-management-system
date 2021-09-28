@@ -57,17 +57,19 @@
 
                                     <?php
 
-                                    $sql = "Select * from category";
+                                    $sql = "Select * from category where is_parent=0";
                                     $res = mysqli_query($db,$sql);
                                     $i = 1;
                                     while ($r = mysqli_fetch_assoc($res)) {
+                                        $cat_id = $r['category_id'];
                                         ?>
                                         <tr>
+
                                             <th scope="row"><?php echo $i++ ?></th>
                                             <td><?php echo $r['category_name'] ?></td>
                                             <td><?php echo  $r['category_description'] ?></td>
                                             <td><?php
-                                                echo  $r['is_parent'] == 0 ? "<span class='badge badge-success'>Primary Category</span>" : "<span class='badge badge-primary'>Sub Category</span>" ?>
+                                                echo  $r['is_parent'] == 0 ? "<span class='badge badge-success'>Parent Category</span>" : "<span class='badge badge-primary'>Sub Category</span>" ?>
                                             </td>
                                             <td><?php
                                                 echo  $r['status'] == 1 ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Inactive</span>" ?>
@@ -81,6 +83,41 @@
                                                 </div>
                                             </td>
                                         </tr>
+
+                                        <?php
+                                         //sub-category check start
+                                        $sql = "select * from category where is_parent = '$cat_id'";
+                                        $subcatres = mysqli_query($db,$sql);
+                                        while($r = mysqli_fetch_assoc($subcatres)){
+                                            $cat_id = $r['category_id'];
+                                            $cat_name = $r['category_name'];
+                                            $cat_description = $r['category_description'];
+                                            $is_parent = $r['is_parent'];
+                                            $status = $r['status']; ?>
+
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>--<?php echo $r['category_name'] ?></td>
+                                                <td><?php echo  $r['category_description'] ?></td>
+                                                <td><?php
+                                                    echo  $r['is_parent'] == 0 ? "<span class='badge badge-success'>Parent Category</span>" : "<span class='badge badge-primary'>Sub Category</span>" ?>
+                                                </td>
+                                                <td><?php
+                                                    echo  $r['status'] == 1 ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Inactive</span>" ?>
+                                                </td>
+                                                <td>
+                                                    <div class="tbl-action">
+                                                        <ul>
+                                                            <li><a href="category.php?do=Edit&id=<?php echo $r['category_id']?>"><i class="fa fa-edit"></i></a></li>
+                                                            <li><a href=""><i class="fa fa-trash"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                      <?php  }
+                                        ?>
+
+<!--                                        //sub-category check ends-->
                                     <?php } ?>
                                     </tbody>
                                 </table>
@@ -115,6 +152,16 @@
                                         <label for="is_parent">Parent Category</label>
                                         <select class="form-control" name="is_parent">
                                             <option value="0">Please Select Parent Category</option>
+                                            <?php
+                                                $parentsql = "select * from category where is_parent = 0";
+                                                $parentres = mysqli_query($db, $parentsql);
+                                                while($row = mysqli_fetch_assoc($parentres)){
+                                                    $cat_id = $row['category_id'];
+                                                    $cat_name = $row['category_name'];
+                                                    ?>
+                                                    <option value="<?php echo $cat_id ?>"><?php echo $cat_name ?></option>
+                                                 <?php } ?>
+
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -192,6 +239,26 @@
                                                 <label for="is_parent">Parent Category</label>
                                                 <select class="form-control" name="is_parent">
                                                     <option value="0">Please Select Parent Category</option>
+                                                    <?php
+                                                    $sql = "select * from category where is_parent=0";
+                                                    $catres = mysqli_query($db,$sql);
+                                                    while($r = mysqli_fetch_assoc($catres)){
+                                                         $cat_id = $r['category_id'];
+                                                         $cat_name = $r['category_name'];
+                                                    ?>
+                                                        <option value="<?php echo $cat_id ?>"><?php echo $cat_name ?></option>
+
+                                                        <?php
+                                                        $sql = "select * from category where is_parent='$cat_id'";
+                                                        $subcatres = mysqli_query($db,$sql);
+                                                        while($r = mysqli_fetch_assoc($subcatres)){
+                                                            $cat_id = $r['category_id'];
+                                                            $cat_name = $r['category_name'];
+                                                            $is_parent = $r['is_parent'];
+                                                        ?>
+                                                            <option value="<?php echo $cat_id ?>">--<?php echo $cat_name ?></option>
+                                                           <?php }
+                                                    } ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">
