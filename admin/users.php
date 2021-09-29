@@ -58,37 +58,59 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $sql = "select * from user";
-                                        $fetchUser = mysqli_query($db, $sql);
-                                        $i=1;
-                                        while($row = mysqli_fetch_assoc($fetchUser)){
+                                    $sql = "select * from user";
+                                    $fetchUser = mysqli_query($db, $sql);
+                                    $i=1;
+                                    while($row = mysqli_fetch_assoc($fetchUser)){
 
-                                    ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $i++ ?></th>
-                                        <td>
-                                            <?php
+                                        ?>
+                                        <tr>
+                                            <th scope="row"><?php echo $i++ ?></th>
+                                            <td>
+                                                <?php
                                                 if (!empty($row['image'])) { ?>
                                                     <img src="dist/img/users/<?php echo $row['image']?>" width="40px">
-                                            <?php    } else { ?>
+                                                <?php    } else { ?>
                                                     <img src="dist/img/avatar5.png" width="40px">
-                                             <?php   }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $row['fullname'] ?></td>
-                                        <td><?php echo $row['email'] ?></td>
-                                        <td><?php echo $row['phone'] ?></td>
-                                        <td><?php echo $row['role'] == 1 ? '<span class="badge badge-success">Admin</span>' : '<span class="badge badge-warning">User</span>' ?></td>
-                                        <td><?php echo $row['status'] == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>' ?></td>
-                                        <td>
-                                            <div class="tbl-action">
-                                                <ul>
-                                                    <li><a href=""><i class="fa fa-edit"></i></a></li>
-                                                    <li><a href=""><i class="fa fa-trash"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                <?php   }
+                                                ?>
+                                            </td>
+                                            <td><?php echo $row['fullname'] ?></td>
+                                            <td><?php echo $row['email'] ?></td>
+                                            <td><?php echo $row['phone'] ?></td>
+                                            <td><?php echo $row['role'] == 1 ? '<span class="badge badge-success">Admin</span>' : '<span class="badge badge-warning">User</span>' ?></td>
+                                            <td><?php echo $row['status'] == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>' ?></td>
+                                            <td>
+                                                <div class="tbl-action">
+                                                    <ul>
+                                                        <li><a href="users.php?do=Edit&user_id=<?php echo $row['user_id'] ?>"><i class="fa fa-edit"></i></a></li>
+                                                        <li><a href="" data-toggle="modal" data-target="#delete<?php echo $row['user_id'] ?>"><i class="fa fa-trash"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Modal Starts -->
+                                                <div class="modal fade" id="delete<?php echo $row['user_id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul style="list-style: none;">
+                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="users.php?id=<?php echo $row['user_id']?>">Confirm</a></li>
+                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-success" href="" data-dismiss="modal">Cancel</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+
+
+                                        </tr>
                                     <?php } ?>
                                     </tbody>
                                 </table>
@@ -110,63 +132,63 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                    <form action="users.php?do=Store" method="POST" enctype="multipart/form-data">
-                                            <div class="row">
-                                                <div class="col-lg">
-                                                    <div class="form-group">
-                                                        <label for="fullname">Full Name</label>
-                                                        <input name="fullname" type="text" class="form-control" autocomplete="off" required="required" placeholder="Full Name">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="email">Email</label>
-                                                        <input name="email" type="text" class="form-control" autocomplete="off" required="required" placeholder="Email">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="password">Password</label>
-                                                        <input name="password" type="password" class="form-control" autocomplete="off" required="required" placeholder="Password">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="repassword">Re-type password</label>
-                                                        <input name="repassword" type="password" class="form-control" autocomplete="off" required="required" placeholder="Re-type Password">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="phone">Phone</label>
-                                                        <input name="phone" type="text" class="form-control" autocomplete="off" required="required" placeholder="Phone">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="phone">Address</label>
-                                                        <input name="address" type="text" class="form-control" autocomplete="off" required="required" placeholder="Address">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="role">User Role</label>
-                                                        <select class="form-control" name="role">
-                                                            <option value="2">Please select User Role</option>
-                                                            <option value="1">Admin</option>
-                                                            <option value="2">User</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="status">Status</label>
-                                                        <select class="form-control" name="status">
-                                                            <option value="0">Please select Status</option>
-                                                            <option value="1">Active</option>
-                                                            <option value="0">Inactive</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="image">Profile Picture</label>
-                                                        <input name="image" type="file" class="form-control-file">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input name="addUser" type="submit" class="btn btn-success">
-                                                    </div>
-                                                </div>
-
+                                <form action="users.php?do=Store" method="POST" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-lg">
+                                            <div class="form-group">
+                                                <label for="fullname">Full Name</label>
+                                                <input name="fullname" type="text" class="form-control" autocomplete="off" required="required" placeholder="Full Name">
                                             </div>
-                                    </form>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input name="email" type="text" class="form-control" autocomplete="off" required="required" placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input name="password" type="password" class="form-control" autocomplete="off" required="required" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="repassword">Re-type password</label>
+                                                <input name="repassword" type="password" class="form-control" autocomplete="off" required="required" placeholder="Re-type Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input name="phone" type="text" class="form-control" autocomplete="off" required="required" placeholder="Phone">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="phone">Address</label>
+                                                <input name="address" type="text" class="form-control" autocomplete="off" required="required" placeholder="Address">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="role">User Role</label>
+                                                <select class="form-control" name="role">
+                                                    <option value="2">Please select User Role</option>
+                                                    <option value="1">Admin</option>
+                                                    <option value="2">User</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="form-control" name="status">
+                                                    <option value="0">Please select Status</option>
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Inactive</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="image">Profile Picture</label>
+                                                <input name="image" type="file" class="form-control-file">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="addUser" type="submit" class="btn btn-success">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     <?php }
@@ -221,14 +243,105 @@
                     }
 
 
-                    elseif ($do == "Edit") {
-                        echo "This page will show update user info in edit form";
-                    }
+                    elseif ($do == "Edit") { ?>
+                        <?php
+
+                        if (isset($_GET['user_id'])){
+                            $user_id = $_GET['user_id'];
+
+                            $sql = "select * from user where user_id='$user_id'";
+                            $data = mysqli_query($db, $sql);
+                            $editabledata = mysqli_fetch_assoc($data);
+                        }
+                        ?>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Edit User</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <form action="users.php?do=Update" method="POST" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-lg">
+                                            <div class="form-group">
+                                                <label for="fullname">Full Name</label>
+                                                <input value="<?php echo $editabledata['fullname'] ?>" name="fullname" type="text" class="form-control" autocomplete="off" required="required" placeholder="Full Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input value="<?php echo $editabledata['email'] ?>" name="email" type="text" class="form-control" autocomplete="off" required="required" placeholder="Email">
+                                            </div>
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <label for="password">Password</label>-->
+                                            <!--                                                <input name="password" type="password" class="form-control" autocomplete="off" required="required" placeholder="Password">-->
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <label for="repassword">Re-type password</label>-->
+                                            <!--                                                <input name="repassword" type="password" class="form-control" autocomplete="off" required="required" placeholder="Re-type Password">-->
+                                            <!--                                            </div>-->
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input value="<?php echo $editabledata['phone'] ?>" name="phone" type="text" class="form-control" autocomplete="off" required="required" placeholder="Phone">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <input value="<?php echo $editabledata['address'] ?>" name="address" type="text" class="form-control" autocomplete="off" required="required" placeholder="Address">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="role">User Role</label>
+                                                <select class="form-control" name="role">
+                                                    <option value="2">Please select User Role</option>
+                                                    <option <?php echo $editabledata['role']==1 ? 'selected' : '' ?> value="1">Admin</option>
+                                                    <option <?php echo $editabledata['role']==2 ? 'selected' : '' ?> value="2">User</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="form-control" name="status">
+                                                    <option value="0">Please select Status</option>
+                                                    <option <?php echo $editabledata['status']==1 ? 'selected' : '' ?> value="1">Active</option>
+                                                    <option <?php echo $editabledata['status']==0 ? 'selected' : '' ?> value="0">Inactive</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="image">Profile Picture</label>
+                                                <?php
+                                                if (!empty($editabledata['image'])) { ?>
+                                                    <img src="dist/img/users/<?php echo $editabledata['image']?>" width="100px" height="100px">
+                                                    <input name="image" type="file" class="form-control-file">
+                                                <?php    } else { ?>
+                                                    <input name="image" type="file" class="form-control-file">
+                                                <?php    }
+                                                ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="updateUser" type="submit" class="btn btn-success">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    <?php   }
 
 
                     elseif ($do == "Update") {
-                        echo "This page will update user info in database";
+                        echo "Update";
+
                     }
+
 
 
                     elseif ($do == "Delete") {
