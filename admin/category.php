@@ -211,6 +211,7 @@
                             $res1 = mysqli_query($db, $sql1);
                             $row = mysqli_fetch_assoc($res1);
                             $cat_id = $row['category_id'];
+                            $is_parent = $row['is_parent'];
 
 
                                 ?>
@@ -241,6 +242,7 @@
                                                 <select class="form-control" name="is_parent">
                                                     <option value="0">Please Choose</option>
                                                     <?php
+                                                    if ($is_parent==0) {
                                                     $sql = "select * from category where is_parent=0";
                                                     $parentCat = mysqli_query($db, $sql);
                                                     while($data = mysqli_fetch_assoc($parentCat)){
@@ -249,12 +251,27 @@
                                                         $is_parent = $data['is_parent'];
                                                          ?>
 
-                                                        <option value="<?php echo $pCatId; ?> "
+                                                        <option value="0"
                                                         <?php
-                                                           if($cat_id == $pCatId) { echo 'selected'; }
+                                                           if($pCatId == $update_id) { echo 'selected'; }
                                                         ?>
                                                         ><?php echo $pCatName; ?></option>
                                                     <?php }
+                                                    } else {
+                                                        $sql2 = "select * from category where is_parent=0";
+                                                        $subCat = mysqli_query($db, $sql2);
+                                                        while($data2 = mysqli_fetch_assoc($subCat)){
+                                                            $cCatId = $data2['category_id'];
+                                                            $cCatName = $data2['category_name'];
+                                                            ?>
+
+                                                            <option value="<?php echo $cCatId; ?>"
+                                                                <?php
+                                                                if($cCatId == $is_parent) { echo 'selected'; }
+                                                                ?>
+                                                            ><?php echo $cCatName; ?></option>
+                                                        <?php }
+                                                    }
                                                     ?>
                                                 </select>
                                             </div>
