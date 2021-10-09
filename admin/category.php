@@ -206,10 +206,11 @@
 
                     elseif ($do == "Edit") {
                         if (isset($_GET['id'])) {
-                            $cat_id = $_GET['id'];
-                            $sql1 = "select * from category where category_id='$cat_id'";
+                            $update_id = $_GET['id'];
+                            $sql1 = "select * from category where category_id='$update_id'";
                             $res1 = mysqli_query($db, $sql1);
                             $row = mysqli_fetch_assoc($res1);
+                            $cat_id = $row['category_id'];
 
 
                                 ?>
@@ -238,27 +239,23 @@
                                             <div class="form-group">
                                                 <label for="is_parent">Parent Category</label>
                                                 <select class="form-control" name="is_parent">
-                                                    <option value="0">Please Select Parent Category</option>
+                                                    <option value="0">Please Choose</option>
                                                     <?php
                                                     $sql = "select * from category where is_parent=0";
-                                                    $catres = mysqli_query($db,$sql);
-                                                    while($r = mysqli_fetch_assoc($catres)){
-                                                         $cat_id = $r['category_id'];
-                                                         $cat_name = $r['category_name'];
-                                                    ?>
-                                                        <option value="<?php echo $cat_id ?>"><?php echo $cat_name ?></option>
+                                                    $parentCat = mysqli_query($db, $sql);
+                                                    while($data = mysqli_fetch_assoc($parentCat)){
+                                                        $pCatId = $data['category_id'];
+                                                        $pCatName = $data['category_name'];
+                                                        $is_parent = $data['is_parent'];
+                                                         ?>
 
+                                                        <option value="<?php echo $pCatId; ?> "
                                                         <?php
-                                                        $sql = "select * from category where is_parent='$cat_id'";
-                                                        $subcatres = mysqli_query($db,$sql);
-                                                        while($r = mysqli_fetch_assoc($subcatres)){
-                                                            $cat_id = $r['category_id'];
-                                                            $cat_name = $r['category_name'];
-                                                            $is_parent = $r['is_parent'];
+                                                           if($cat_id == $pCatId) { echo 'selected'; }
                                                         ?>
-                                                            <option value="<?php echo $cat_id ?>">--<?php echo $cat_name ?></option>
-                                                           <?php }
-                                                    } ?>
+                                                        ><?php echo $pCatName; ?></option>
+                                                    <?php }
+                                                    ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -275,6 +272,7 @@
                                                 <input type="submit" name="updatecat" class="btn btn-warning" value="Update Category">
                                             </div>
                                         </form>
+
                                     </div>
                                 </div>
 
