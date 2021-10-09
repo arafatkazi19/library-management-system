@@ -78,8 +78,30 @@
                                                 <div class="tbl-action">
                                                     <ul>
                                                         <li><a href="category.php?do=Edit&id=<?php echo $r['category_id']?>"><i class="fa fa-edit"></i></a></li>
-                                                        <li><a href=""><i class="fa fa-trash"></i></a></li>
+                                                        <li><a data-toggle="modal" data-target="#delParCat<?php echo $cat_id; ?>" href=""><i class="fa fa-trash"></i></a></li>
                                                     </ul>
+
+                                                    <!--Delete Parent Category Modal -->
+                                                    <div class="modal fade" id="delParCat<?php echo $cat_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="modal-buttons">
+                                                                            <ul>
+                                                                                <li><a href="category.php?do=Delete&cat_id=<?php echo $cat_id; ?>" class="btn btn-danger">Confirm</a></li>
+                                                                                <li><button type="button" class="btn btn-success" data-dismiss="modal">Close</button></li>
+                                                                            </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -109,8 +131,29 @@
                                                     <div class="tbl-action">
                                                         <ul>
                                                             <li><a href="category.php?do=Edit&id=<?php echo $r['category_id']?>"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href=""><i class="fa fa-trash"></i></a></li>
+                                                            <li><a data-toggle="modal" data-target="#delCldCat<?php echo $cat_id; ?>" href=""><i class="fa fa-trash"></i></a></li>
                                                         </ul>
+                                                        <!--Delete Child Category Modal -->
+                                                        <div class="modal fade" id="delCldCat<?php echo $cat_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="modal-buttons">
+                                                                            <ul>
+                                                                                <li><a href="category.php?do=Delete&cat_id=<?php echo $cat_id; ?>" class="btn btn-danger">Confirm</a></li>
+                                                                                <li><button type="button" class="btn btn-success" data-dismiss="modal">Close</button></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -324,7 +367,47 @@
 
 
                     elseif ($do == "Delete") {
-                        echo "Deleting user from database";
+                        if (isset($_GET['cat_id'])){
+                            $delID = $_GET['cat_id'];
+
+                            $delData = "select * from category where category_id='$delID'";
+                            $delRow = mysqli_query($db, $delData);
+                            while ($delRes = mysqli_fetch_assoc($delRow)){
+                                $cat_id = $delRes['category_id'];
+                                $is_parent = $delRes['is_parent'];
+
+                                //Sub category delete
+                                if ($is_parent != 0){
+                                    $deleteSql = "DELETE from category where category_id='$delID'";
+                                    $deleteSubCat = mysqli_query($db, $deleteSql);
+                                    if ($deleteSubCat){
+                                        header("Location: category.php?do=Manage");
+                                    } else{
+                                        die("MySQLi Error ". mysqli_error($db));
+                                    }
+                                }
+                                //delete parent category and it's sub categories
+                                else if($is_parent == 0){
+                                    $fetchDelData = "select * from category where is_parent='$cat_id'";
+                                    $deleteAllSubCat = mysqli_query($db, $fetchDelData);
+                                    while ($row = mysqli_fetch_assoc($deleteAllSubCat)){
+                                        $subCatID = $row['category_id'];
+                                        echo $subCatID;
+                                        $deleteSubCatSql = "delete from category where category_id='$subCatID'";
+                                        $deleteRes = mysqli_query($db, $deleteSubCatSql);
+                                    }
+                                    $deleteSql = "DELETE from category where category_id='$delID'";
+                                    $deleteParentCat = mysqli_query($db, $deleteSql);
+
+                                    if ($deleteParentCat){
+                                        header("Location: category.php?do=Manage");
+                                 } else{
+                                        die("MySQLi Error ". mysqli_error($db));
+                                    }
+
+                                }
+                            }
+                        }
                     }
 
                     ?>
