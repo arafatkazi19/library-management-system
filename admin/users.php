@@ -69,9 +69,9 @@
                                             <td>
                                                 <?php
                                                 if (!empty($row['image'])) { ?>
-                                                    <img src="dist/img/users/<?php echo $row['image']?>" width="40px">
+                                                    <img src="dist/img/users/<?php echo $row['image']?>" width="100px">
                                                 <?php    } else { ?>
-                                                    <img src="dist/img/avatar5.png" width="40px">
+                                                    <img src="dist/img/avatar5.png" width="80px">
                                                 <?php   }
                                                 ?>
                                             </td>
@@ -204,6 +204,7 @@
                             $address = $_POST['address'];
                             $role = $_POST['role'];
                             $status = $_POST['status'];
+
                             $image = $_FILES['image']['name'];
                             $image_temp = $_FILES['image']['tmp_name'];
 
@@ -229,7 +230,7 @@
                                     if ($addUser){
                                         header("Location: users.php?do=Manage");
                                     } else {
-
+                                        die("MySQLi Error". mysqli_error($db));
                                     }
                                 }
 
@@ -278,14 +279,14 @@
                                                 <label for="email">Email</label>
                                                 <input value="<?php echo $editabledata['email'] ?>" name="email" type="text" class="form-control" autocomplete="off" required="required" placeholder="Email">
                                             </div>
-                                            <!--                                            <div class="form-group">-->
-                                            <!--                                                <label for="password">Password</label>-->
-                                            <!--                                                <input name="password" type="password" class="form-control" autocomplete="off" required="required" placeholder="Password">-->
-                                            <!--                                            </div>-->
-                                            <!--                                            <div class="form-group">-->
-                                            <!--                                                <label for="repassword">Re-type password</label>-->
-                                            <!--                                                <input name="repassword" type="password" class="form-control" autocomplete="off" required="required" placeholder="Re-type Password">-->
-                                            <!--                                            </div>-->
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input name="password" type="password" class="form-control" placeholder="xxxxxx">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="repassword">Re-type password</label>
+                                                <input name="repassword" type="password" class="form-control" placeholder="xxxxxx">
+                                            </div>
                                             <div class="form-group">
                                                 <label for="phone">Phone</label>
                                                 <input value="<?php echo $editabledata['phone'] ?>" name="phone" type="text" class="form-control" autocomplete="off" required="required" placeholder="Phone">
@@ -318,14 +319,16 @@
                                                 <?php
                                                 if (!empty($editabledata['image'])) { ?>
                                                     <img src="dist/img/users/<?php echo $editabledata['image']?>" width="100px" height="100px">
-                                                    <input name="image" type="file" class="form-control-file">
+
                                                 <?php    } else { ?>
-                                                    <input name="image" type="file" class="form-control-file">
+                                                    <span class="text text-success">No Picture Uploaded</span>
                                                 <?php    }
                                                 ?>
+                                                <input name="image" type="file" class="form-control-file">
                                             </div>
                                             <div class="form-group">
-                                                <input name="updateUser" type="submit" class="btn btn-success">
+                                                <input name="user_id" type="hidden" value="<?php echo $editabledata['user_id'] ?>">
+                                                <input value="Save Changes" name="updateUser" type="submit" class="btn btn-success">
                                             </div>
                                         </div>
 
@@ -338,7 +341,101 @@
 
 
                     elseif ($do == "Update") {
-                        echo "Update";
+                       if (isset($_POST['updateUser'])){
+                           $user_id = $_POST['user_id'];
+                           $fullname = $_POST['fullname'];
+                           $email = $_POST['email'];
+                           $password = $_POST['password'];
+                           $repassword = $_POST['repassword'];
+                           $phone = $_POST['phone'];
+                           $address = $_POST['address'];
+                           $role = $_POST['role'];
+                           $status = $_POST['status'];
+
+                           $image = $_FILES['image']['name'];
+                           $image_temp = $_FILES['image']['tmp_name'];
+
+                           if (!empty($password) && !empty($image)){
+                                if ($password==$repassword){
+                                    $hassedPassword = sha1($password);
+                                }
+
+                                //delete exiting image if user change image
+                                $oldimage = "select * from user where user_id='$user_id'";
+                                $resImage = mysqli_query($db, $oldimage);
+                                while ($existingImage = mysqli_fetch_assoc($resImage)){
+                                    $thisImage = $existingImage['image'];
+                                    unlink("dist/img/users/".$thisImage);
+                                }
+                                //upload new image
+                               $image_name = rand(1, 99999). '_' .$image;
+                               move_uploaded_file($image_temp, "dist/img/users/$image_name");
+
+                               $updateUser = "update user set fullname='$fullname',email='$email',password='$hassedPassword',phone='$phone',address='$address',image='$image_name',role='$role',status='$status' 
+                                    where user_id='$user_id'";
+                               $updateRes = mysqli_query($db, $updateUser);
+
+                               if ($updateRes){
+                                   header("Location:users.php?do=Manage");
+                               } else {
+                                   die("MySQLi Error". mysqli_error($db));
+                               }
+
+
+                           }
+                           elseif (!empty($password) && empty($image)){
+                                   if ($password==$repassword){
+                                       $hassedPassword = sha1($password);
+                                   }
+
+
+                                   $updateUser = "update user set fullname='$fullname',email='$email',password='$hassedPassword',phone='$phone',address='$address',role='$role',status='$status' 
+                                    where user_id='$user_id'";
+                                   $updateRes = mysqli_query($db, $updateUser);
+
+                                   if ($updateRes){
+                                       header("Location:users.php?do=Manage");
+                                   } else {
+                                       die("MySQLi Error". mysqli_error($db));
+                                   }
+                           }
+                           elseif (empty($password) && !empty($image)){
+
+                                   //delete exiting image if user change image
+                                   $oldimage = "select * from user where user_id='$user_id'";
+                                   $resImage = mysqli_query($db, $oldimage);
+                                   while ($existingImage = mysqli_fetch_assoc($resImage)){
+                                       $thisImage = $existingImage['image'];
+                                       unlink("dist/img/users/".$thisImage);
+                                   }
+                                   //upload new image
+                                   $image_name = rand(1, 99999). '_' .$image;
+                                   move_uploaded_file($image_temp, "dist/img/users/$image_name");
+
+                                   $updateUser = "update user set fullname='$fullname',email='$email',phone='$phone',address='$address',image='$image_name',role='$role',status='$status' 
+                                    where user_id='$user_id'";
+                                   $updateRes = mysqli_query($db, $updateUser);
+
+                                   if ($updateRes){
+                                       header("Location:users.php?do=Manage");
+                                   } else {
+                                       die("MySQLi Error". mysqli_error($db));
+                                   }
+                           }
+                           else{
+
+
+                                   $updateUser = "update user set fullname='$fullname',email='$email',phone='$phone',address='$address',role='$role',status='$status' 
+                                    where user_id='$user_id'";
+                                   $updateRes = mysqli_query($db, $updateUser);
+
+                                   if ($updateRes){
+                                       header("Location:users.php?do=Manage");
+                                   } else {
+                                       die("MySQLi Error". mysqli_error($db));
+                                   }
+                           }
+                       }
 
                     }
 
