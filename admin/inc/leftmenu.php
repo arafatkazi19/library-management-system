@@ -11,10 +11,35 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    <?php
+                        $user_id = $_SESSION['user_id'];
+                        $sql = "select * from user where user_id='$user_id'";
+                        $userData = mysqli_query($db, $sql);
+                        while ($row = mysqli_fetch_assoc($userData)){
+                                $image =  $row['image'];
+                                if(!empty($image)){ ?>
+                                    <img src="dist/img/users/<?php echo $image ?>" class="img-circle elevation-2" alt="User Image">
+                             <?php  } else { ?>
+                                  <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                         <?php   }
+
+                        } 
+                       
+                    ?>
+                    
+                
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">
+                    <?php
+                        $user_id = $_SESSION['user_id'];
+                         $sql = "select * from user where user_id='$user_id'";
+                                $userData = mysqli_query($db, $sql);
+                                while ($row = mysqli_fetch_assoc($userData)){
+                                   echo $row['fullname'];
+                                }
+                    ?>
+                </a>
             </div>
         </div>
 
