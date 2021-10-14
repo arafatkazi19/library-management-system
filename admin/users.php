@@ -99,7 +99,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul style="list-style: none;">
-                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="users.php?id=<?php echo $row['user_id']?>">Confirm</a></li>
+                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="users.php?do=Delete&user_id=<?php echo $row['user_id']?>">Confirm</a></li>
                                                                     <li style="display: inline;margin: 0px 7px"><a class="btn btn-success" href="" data-dismiss="modal">Cancel</a></li>
                                                                 </ul>
                                                             </div>
@@ -442,7 +442,18 @@
 
 
                     elseif ($do == "Delete") {
-                        echo "Deleting user from database";
+                        if (isset($_GET['user_id'])) {
+                            $user_id = $_GET['user_id'];
+
+                            $sql = "DELETE from user where user_id='$user_id'";
+                            $res = mysqli_query($db, $sql);
+
+                            if ($res) {
+                                header("Location: users.php?do=Manage");
+                            } else{
+                                die("MySQLi Error ". mysqli_error($db));
+                            }
+                        }
                     }
 
                     ?>
