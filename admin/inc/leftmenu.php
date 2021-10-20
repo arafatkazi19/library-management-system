@@ -100,6 +100,33 @@
                 </li>
                 <!-- Category Ends  -->
 
+                                <!-- Manage Books Starts -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                           Books
+                            <i class="fas fa-angle-left right"></i>
+                            <!--                            <span class="badge badge-info right">6</span>-->
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="book.php?do=Manage" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage All Books</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="book.php?do=Add" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New Book</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Manage Books Ends -->
+
 
                 <li class="nav-header">User Management</li>
                 <!--      User Management Starts      -->
@@ -128,6 +155,8 @@
                     </ul>
                 </li>
                 <!--User Management ends-->
+
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
