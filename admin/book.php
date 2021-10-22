@@ -94,23 +94,28 @@
                                                     $res = mysqli_query($db, $sql);
                                                     while ($r=mysqli_fetch_assoc($res)){
                                                         $cat_id = $r['category_id'];
-                                                        $cat_name = $r['category_name']; ?>
-                                                        <span class="badge badge-primary"><?php echo $cat_name ?></span>
+                                                        $cat_name = $r['category_name'];
+                                                        $is_parent = $r['is_parent'];
 
-                                                <?php    }
+/*                                                        $is_parent==0 : '<span class="badge badge-primary"><?php echo $cat_name ?></span>' : '<span class="badge badge-primary"><?php echo $cat_name ?></span>';*/
 
-                                                ?>
+                                                        if ($is_parent==0){
+                                                        ?>
+                                                            <span class="badge badge-primary"><?php echo $cat_name ?></span>
+                                                <?php  } else { ?>
+                                                      <span class="badge badge-success"><?php echo $cat_name ?></span>
+                                               <?php } ?>
                                             </td>
                                             <td><?php echo $row['status'] == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>' ?></td>
                                             <td>
                                                 <div class="tbl-action">
                                                     <ul>
                                                         <li><a href="book.php?do=Edit&id=<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></a></li>
-                                                        <li><a href="" data-toggle="modal" data-target="#delete<?php echo $row['user_id'] ?>"><i class="fa fa-trash"></i></a></li>
+                                                        <li><a href="" data-toggle="modal" data-target="#delete<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></a></li>
                                                     </ul>
                                                 </div>
                                                 <!-- Modal Starts -->
-                                                <div class="modal fade" id="delete<?php echo $row['user_id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="delete<?php echo $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -121,7 +126,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul style="list-style: none;">
-                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="users.php?do=Delete&user_id=<?php echo $row['user_id']?>">Confirm</a></li>
+                                                                    <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="book.php?do=Delete&id=<?php echo $row['id']?>">Confirm</a></li>
                                                                     <li style="display: inline;margin: 0px 7px"><a class="btn btn-success" href="" data-dismiss="modal">Cancel</a></li>
                                                                 </ul>
                                                             </div>
@@ -142,7 +147,7 @@
                             </div>
                         </div>
 
-                    <?php }
+                    <?php } }
 
                     elseif ($do == "Add") {  ?>
                         <div class="card">
@@ -328,50 +333,40 @@
                                             <div class="form-group">
                                                 <label for="role">Category</label>
                                                 <select class="form-control" name="cat_id">
-                                                    <option value="0">Please Choose</option>
+                                                    <option>Please select Category</option>
                                                     <?php
-                                                    $cat_id = $editabledata['cat_id'];
-                                                    $fetchCatsql = "select * from category where category_id='$cat_id'";
-                                                    $result = mysqli_query($fetchCatsql);
-                                                    while ($r=mysqli_fetch_assoc($result)){
-                                                        $cat_id = $r['category_id'];
+                                                    //fething parent category
+                                                    $sql = "select * from category where is_parent=0";
+                                                    $res = mysqli_query($db,$sql);
+                                                    while ($r = mysqli_fetch_assoc($res)){
+                                                        $p_cat_id = $r['category_id'];
                                                         $cat_name = $r['category_name'];
-                                                        $is_parent = $r['is_parent'];
+                                                        ?>
 
-                                                    }
-                                                    if ($is_parent==0) {
-                                                        $sql = "select * from category where is_parent=0";
-                                                        $parentCat = mysqli_query($db, $sql);
-                                                        while($data = mysqli_fetch_assoc($parentCat)){
-                                                            $pCatId = $data['category_id'];
-                                                            $pCatName = $data['category_name'];
-                                                            $is_parent = $data['is_parent'];
+                                                        <option value="<?php echo $p_cat_id ?>"
+                                                            <?php
+                                                            $cat_id = $editabledata['cat_id'];
+                                                            if($cat_id == $p_cat_id) { echo 'selected'; }
                                                             ?>
+                                                        ><?php echo $cat_name; ?></option>
 
-                                                            <option value="0"
+                                                        <?php
+                                                        //fetching sub category
+                                                        $cat_id = $editabledata['cat_id'];
+                                                        $sql2 = "select * from category where is_parent='$p_cat_id'";
+                                                        $res2 = mysqli_query($db, $sql2);
+                                                        while ($r2 = mysqli_fetch_assoc($res2)) {
+                                                            $sub_cat_id = $r2['category_id'];
+                                                            $sub_cat_name = $r2['category_name']; ?>
+
+                                                            <option value="<?php echo $sub_cat_id; ?>"
                                                                 <?php
-                                                                if($pCatId == $cat_id) { echo 'selected'; }
+                                                                if($cat_id == $sub_cat_id) { echo 'selected'; }
                                                                 ?>
-                                                            ><?php echo $pCatName; ?></option>
-                                                        <?php }
-                                                    } else {
-                                                        $sql2 = "select * from category where is_parent=0";
-                                                        $subCat = mysqli_query($db, $sql2);
-                                                        while($data2 = mysqli_fetch_assoc($subCat)){
-                                                            $cCatId = $data2['category_id'];
-                                                            $cCatName = $data2['category_name'];
-                                                            $is_parent = $data2['is_parent'];
-                                                            ?>
+                                                            >--<?php echo $sub_cat_name; ?></option>
 
-                                                            <option value="<?php echo $cCatId; ?>"
-                                                                <?php
-                                                                if($cat_id == $cCatId) { echo 'selected'; }
-                                                                ?>
-                                                            ><?php echo $cCatName; ?></option>
-                                                        <?php }
-                                                    }
-
-                                                    ?>
+                                                        <?php  }
+                                                    } ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -397,7 +392,8 @@
 
                                             </div>
                                             <div class="form-group">
-                                                <input name="editBook" type="submit" class="btn btn-success">
+                                                <input name="id" type="hidden" value="<?php echo $editabledata['id'] ?>">
+                                                <input name="updateBook" type="submit" class="btn btn-success">
                                             </div>
                                         </div>
 
@@ -410,115 +406,72 @@
 
 
                     elseif ($do == "Update") {
-                       if (isset($_POST['updateUser'])){
-                           $user_id = $_POST['user_id'];
-                           $fullname = $_POST['fullname'];
-                           $email = $_POST['email'];
-                           $password = $_POST['password'];
-                           $repassword = $_POST['repassword'];
-                           $phone = $_POST['phone'];
-                           $address = $_POST['address'];
-                           $role = $_POST['role'];
+                       if (isset($_POST['updateBook'])){
+                           $id = $_POST['id'];
+                           $title = $_POST['title'];
+                           $sub_title = $_POST['sub_title'];
+                           $description = $_POST['description'];
+                           $cat_id = $_POST['cat_id'];
+                           $author_name = $_POST['author_name'];
+                           $quantity = $_POST['quantity'];
                            $status = $_POST['status'];
 
                            $image = $_FILES['image']['name'];
                            $image_temp = $_FILES['image']['tmp_name'];
 
-                           if (!empty($password) && !empty($image)){
-                                if ($password==$repassword){
-                                    $hassedPassword = sha1($password);
-                                }
+                           if (!empty($image)){
 
                                 //delete exiting image if user change image
-                                $oldimage = "select * from user where user_id='$user_id'";
+                                $oldimage = "select * from books where id='$id'";
                                 $resImage = mysqli_query($db, $oldimage);
                                 while ($existingImage = mysqli_fetch_assoc($resImage)){
                                     $thisImage = $existingImage['image'];
-                                    unlink("dist/img/users/".$thisImage);
+                                    unlink("dist/img/books/".$thisImage);
                                 }
                                 //upload new image
                                $image_name = rand(1, 99999). '_' .$image;
-                               move_uploaded_file($image_temp, "dist/img/users/$image_name");
+                               move_uploaded_file($image_temp, "dist/img/books/$image_name");
 
-                               $updateUser = "update user set fullname='$fullname',email='$email',password='$hassedPassword',phone='$phone',address='$address',image='$image_name',role='$role',status='$status' 
-                                    where user_id='$user_id'";
-                               $updateRes = mysqli_query($db, $updateUser);
+                               $updateBook = "update books set title='$title',sub_title='$sub_title',description='$description',cat_id='$cat_id',author_name='$author_name',image='$image_name',quantity='$quantity',status='$status' 
+                                    where id='$id'";
+                               $updateRes = mysqli_query($db, $updateBook);
 
                                if ($updateRes){
-                                   header("Location:users.php?do=Manage");
+                                   header("Location:book.php?do=Manage");
                                } else {
                                    die("MySQLi Error". mysqli_error($db));
                                }
 
 
                            }
-                           elseif (!empty($password) && empty($image)){
-                                   if ($password==$repassword){
-                                       $hassedPassword = sha1($password);
-                                   }
+                           elseif(empty($image)){
 
 
-                                   $updateUser = "update user set fullname='$fullname',email='$email',password='$hassedPassword',phone='$phone',address='$address',role='$role',status='$status' 
-                                    where user_id='$user_id'";
-                                   $updateRes = mysqli_query($db, $updateUser);
+                               $updateBook = "update books set title='$title',sub_title='$sub_title',description='$description',cat_id='$cat_id',author_name='$author_name',quantity='$quantity',status='$status' 
+                                    where id='$id'";
+                               $updateRes = mysqli_query($db, $updateBook);
 
-                                   if ($updateRes){
-                                       header("Location:users.php?do=Manage");
-                                   } else {
-                                       die("MySQLi Error". mysqli_error($db));
-                                   }
+                               if ($updateRes){
+                                   header("Location:book.php?do=Manage");
+                               } else {
+                                   die("MySQLi Error". mysqli_error($db));
+                               }
                            }
-                           elseif (empty($password) && !empty($image)){
-
-                                   //delete exiting image if user change image
-                                   $oldimage = "select * from user where user_id='$user_id'";
-                                   $resImage = mysqli_query($db, $oldimage);
-                                   while ($existingImage = mysqli_fetch_assoc($resImage)){
-                                       $thisImage = $existingImage['image'];
-                                       unlink("dist/img/users/".$thisImage);
-                                   }
-                                   //upload new image
-                                   $image_name = rand(1, 99999). '_' .$image;
-                                   move_uploaded_file($image_temp, "dist/img/users/$image_name");
-
-                                   $updateUser = "update user set fullname='$fullname',email='$email',phone='$phone',address='$address',image='$image_name',role='$role',status='$status' 
-                                    where user_id='$user_id'";
-                                   $updateRes = mysqli_query($db, $updateUser);
-
-                                   if ($updateRes){
-                                       header("Location:users.php?do=Manage");
-                                   } else {
-                                       die("MySQLi Error". mysqli_error($db));
-                                   }
-                           }
-                           else{
 
 
-                                   $updateUser = "update user set fullname='$fullname',email='$email',phone='$phone',address='$address',role='$role',status='$status' 
-                                    where user_id='$user_id'";
-                                   $updateRes = mysqli_query($db, $updateUser);
-
-                                   if ($updateRes){
-                                       header("Location:users.php?do=Manage");
-                                   } else {
-                                       die("MySQLi Error". mysqli_error($db));
-                                   }
-                           }
                        }
 
                     }
 
-
-
                     elseif ($do == "Delete") {
-                        if (isset($_GET['user_id'])) {
-                            $user_id = $_GET['user_id'];
+                        if (isset($_GET['id'])) {
+                            $id = $_GET['id'];
 
-                            $sql = "DELETE from user where user_id='$user_id'";
+                            $sql = "DELETE from books where id='$id'";
                             $res = mysqli_query($db, $sql);
 
                             if ($res) {
-                                header("Location: users.php?do=Manage");
+                                header("Location: book.php?do=Manage");
                             } else{
                                 die("MySQLi Error ". mysqli_error($db));
                             }
