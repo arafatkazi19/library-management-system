@@ -87,24 +87,4 @@ include "admin/inc/db.php";
     </div>
 </header>
 
-<!--All books section starts-->
-<div class="container">
-    <div class="row">
-         <!--    Show books    -->
-        <div class="col-lg-9">
-            <div class="row">
-                <div class="col-lg-4">
-                    <h1>Hello World</h1>
-                </div>
-            </div>
-        </div>
-        <!--    Show books end    -->
 
-        <!--  Sidebar Starts  -->
-        <div class="col-lg-3">
-
-        </div>
-        <!--   Sidebar ends   -->
-    </div>
-</div>
-<!--All books section ends-->
