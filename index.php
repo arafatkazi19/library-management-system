@@ -4,7 +4,7 @@
     <!--All books section starts-->
 <section class="all-books">
     <div class="container">
-        <h2>Our All Books Collection</h2>
+        <h2 class="text text-center mb-2 text-primary">Our All Books Collection</h2>
         <div class="row">
             <!--    Show books    -->
             <div class="col-lg-9">
@@ -32,9 +32,9 @@
                                 <div class="book-thumbnail">
                                     <?php
                                     if (!empty($row['image'])) { ?>
-                                        <img src="admin/dist/img/books/<?php echo $row['image']?>" class="img-fluid">
+                                        <img src="admin/dist/img/books/<?php echo $row['image']?>" class="img-fluid img-size">
                                     <?php    } else { ?>
-                                        <img src="admin/dist/img/books/default_book.jpg" class="img-fluid">
+                                        <img src="admin/dist/img/books/default_book.jpg" class="img-fluid img-size">
                                     <?php   }
                                     ?>
 
@@ -44,9 +44,12 @@
                                 </div>
                                 <div class="book-info">
                                     <h4><?php echo $title; ?></h4>
-                                    <p><?php echo $sub_title; ?></p>
-                                    <p><span>Quantity: <?php echo $quantity;?> PCs</span></p>
-                                    <a href="">Book Now</a>
+                                    <p class="sub-title"><?php echo $sub_title; ?></p>
+                                    <p class="quantity"><span>Quantity: <?php echo $quantity;?> PCs</span></p>
+
+                                    <p><?php echo substr($description, 0,40) ?>...<a href="">Read More</a></p>
+
+                                    <a href="" class="book-now-btn">Book Now</a>
                                 </div>
                             </div>
                         <?php     }
