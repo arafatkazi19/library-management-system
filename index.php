@@ -10,7 +10,7 @@
             <div class="col-lg-9">
                 <div class="row">
                     <?php
-                    $sql = "select * from books where status=1 order by title desc";
+                    $sql = "select * from books where status=1 order by title asc";
                     $allBooks = mysqli_query($db, $sql);
                     $countBooks = mysqli_num_rows($allBooks);
 
@@ -28,7 +28,7 @@
                             $image = $row['image'];
                             $status = $row['status']; ?>
 
-                            <div class="col-lg-4 book-item">
+                            <div class="col-lg-4 book-item mt-3">
                                 <div class="book-thumbnail">
                                     <?php
                                     if (!empty($row['image'])) { ?>
@@ -47,7 +47,7 @@
                                     <p class="sub-title"><?php echo $sub_title; ?></p>
                                     <p class="quantity"><span>Quantity: <?php echo $quantity;?> PCs</span></p>
 
-                                    <p><?php echo substr($description, 0,40) ?>...<a href="">Read More</a></p>
+                                    <p><?php echo substr($description, 0,40) ?>...<a href="details.php?id=<?php echo $id ?>">Read More</a></p>
 
                                     <a href="" class="book-now-btn">Book Now</a>
                                 </div>

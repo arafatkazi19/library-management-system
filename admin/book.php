@@ -239,9 +239,9 @@
 
                     elseif ($do == "Store") {
                         if(isset($_POST['addBook'])){
-                            $title = $_POST['title'];
-                            $sub_title = $_POST['sub_title'];
-                            $description = $_POST['description'];
+                            $title = mysqli_real_escape_string($db, $_POST['title']);
+                            $sub_title = mysqli_real_escape_string($db, $_POST['sub_title']);
+                            $description = mysqli_real_escape_string($db, $_POST['description']) ;
                             $author_name = $_POST['author_name'];
                             $quantity = $_POST['quantity'];
                             $cat_id = $_POST['cat_id'];
@@ -408,9 +408,9 @@
                     elseif ($do == "Update") {
                        if (isset($_POST['updateBook'])){
                            $id = $_POST['id'];
-                           $title = $_POST['title'];
-                           $sub_title = $_POST['sub_title'];
-                           $description = $_POST['description'];
+                           $title = mysqli_real_escape_string($db, $_POST['title']);
+                           $sub_title = mysqli_real_escape_string($db, $_POST['sub_title']);
+                           $description = mysqli_real_escape_string($db, $_POST['description']);
                            $cat_id = $_POST['cat_id'];
                            $author_name = $_POST['author_name'];
                            $quantity = $_POST['quantity'];

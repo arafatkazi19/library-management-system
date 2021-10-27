@@ -55,8 +55,8 @@ include "inc/db.php";
 
       <?php
           if (isset($_POST['login'])) {
-              $email = $_POST['email'];
-              $password = $_POST['password'];
+              $email = mysqli_real_escape_string($db, $_POST['email']);
+              $password = mysqli_real_escape_string($db, $_POST['password']);
 
               if (!empty($password)) {
                 $hassPassword = sha1($password);

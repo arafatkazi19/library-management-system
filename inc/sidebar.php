@@ -1,4 +1,4 @@
-<div class="col-lg-3">
+<div class="col-lg-3 mt-2">
     <div class="search-option">
         <form method="post" action="">
             <div class="mb-3">
