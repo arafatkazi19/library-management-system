@@ -2,6 +2,10 @@
 session_start();
  ob_start();
  include "inc/db.php";
+
+ if (empty($_SESSION['user_id']) || empty($_SESSION['email']) || $_SESSION['role']!=1){
+     header("Location: index.php");
+ }
 ?>
 
 <!DOCTYPE html>

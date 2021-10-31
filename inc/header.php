@@ -1,4 +1,5 @@
 <?php
+session_start();
 ob_start();
 include "admin/inc/db.php";
 
@@ -26,7 +27,7 @@ include "admin/inc/db.php";
                 <!--Navbar Starts-->
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Online <span>Library</span></a>
+                        <a class="navbar-brand" href="index.php">Online <span>Library</span></a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -74,7 +75,13 @@ include "admin/inc/db.php";
                                     }
                                 ?>
 
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="login.php">Signin</a>
+                                </li>
 
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="register.php">Signup</a>
+                                </li>
 
                             </ul>
                         </div>

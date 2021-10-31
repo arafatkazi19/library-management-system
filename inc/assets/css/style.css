@@ -127,8 +127,50 @@ header{
 }
 
 .img-size{
-    width: 500px;
-    height: 400px;
+    width: 340px;
+    height: 350px;
 }
 
 /*show books ends*/
+
+/*Book details*/
+.book-details .book-now-btn{
+    position: relative;
+    overflow: hidden;
+    background: #333;
+    padding: 10px 40px;
+    display: block;
+    margin: 15px auto 0;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    z-index: 1;
+    transition: all 0.4s ease-in-out;
+
+}
+
+.book-details .book-now-btn::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: #ff0000;
+    z-index: -1;
+    transition: all 0.4s ease-in-out;
+}
+
+.book-details .book-now-btn:hover::after{
+    left: 0;
+}
+
+.book-detail-thumbnail img{
+    height: 550px;
+    width: 450px;
+}
+/*Book details ends*/
+
+.login-option{
+    margin-top: 10px;
+}

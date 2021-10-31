@@ -49,7 +49,13 @@
 
                                     <p><?php echo substr($description, 0,40) ?>...<a href="details.php?id=<?php echo $id ?>">Read More</a></p>
 
-                                    <a href="" class="book-now-btn">Book Now</a>
+                                    <?php
+                                    if (empty($_SESSION['email'])) { ?>
+                                        <a href="login.php" class="book-now-btn">Login to Book</a>
+                                    <?php } else{ ?>
+                                        <a href="" class="book-now-btn">Book Now</a>
+                                    <?php }
+                                    ?>
                                 </div>
                             </div>
                         <?php     }
