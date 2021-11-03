@@ -53,7 +53,7 @@
                                     if (empty($_SESSION['email'])) { ?>
                                         <a href="login.php" class="book-now-btn">Login to Book</a>
                                     <?php } else{ ?>
-                                        <a href="" class="book-now-btn">Book Now</a>
+                                        <a href="booking.php?book_id=<?php echo $id ?>" class="book-now-btn">Book Now</a>
                                     <?php }
                                     ?>
                                 </div>
