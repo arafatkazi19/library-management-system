@@ -25,6 +25,16 @@ session_start();
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
     <link rel="stylesheet" href="dist/css/custom.css">
+
+<!--    DatePicker-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+<!--    Datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+
+
+
+
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">

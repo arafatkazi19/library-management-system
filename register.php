@@ -11,25 +11,25 @@
                         <div class="row align-items-center">
                             <div class="form-group">
                                 <label>Full name</label>
-                                <input type="text" class="form-control mb-3" placeholder="Your Full Name">
+                                <input name="fullname" required="required" type="text" class="form-control mb-3" placeholder="Your Full Name">
                             </div>
                         </div>
                         <div class="row align-items-center">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input name="email" type="email" class="form-control mb-3" placeholder="Your Email">
+                                <input name="email" required="required" type="email" class="form-control mb-3" placeholder="Your Email">
                             </div>
                         </div>
                         <div class="row align-items-center">
                             <div class="form-group">
                                 <label>Password</label>
-                                <input name="password" type="password" class="form-control mb-3" placeholder="Your Password">
+                                <input name="password" type="password" class="form-control mb-3" required="required" placeholder="Your Password">
                             </div>
                         </div>
                         <div class="row align-items-center">
                             <div class="form-group">
                                 <label>Re-type Password</label>
-                                <input name="password" type="password" class="form-control mb-3" placeholder="Re-type Password">
+                                <input name="repassword" type="password" class="form-control mb-3" required="required" placeholder="Re-type Password">
                             </div>
                         </div>
                         <div class="row">
@@ -38,6 +38,27 @@
                     </div>
                 </div>
                 </form>
+                <?php
+                    if (isset($_POST['register'])){
+                        $fullname = $_POST['fullname'];
+                        $email = $_POST['email'];
+                        $password = $_POST['password'];
+                        $repassword = $_POST['repassword'];
+
+                        if ($password == $repassword)
+                            $hasshedpassword = sha1($password);
+
+                        $sql = "insert into user(fullname,email,password,join_date)
+                                            VALUES('$fullname','$email','$hasshedpassword',now())";
+                        $userData = mysqli_query($db, $sql);
+
+                        if ($userData)
+                            header("Location: login.php");
+                        else
+                            die("MySQLi Error". mysqli_error($db));
+
+                    }
+                ?>
 
                 <div class="login-option">
                     <ul>

@@ -18,6 +18,9 @@ include "admin/inc/db.php";
 
     <!-- JQuery UI   -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+    <!-- Font Awesome   -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <!--Header Starts-->
@@ -105,7 +108,7 @@ include "admin/inc/db.php";
                                             ?>
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="#">Booking Item List</a></li>
+                                            <li><a class="dropdown-item" href="order-history.php">Booking Item List</a></li>
                                             <li><a class="dropdown-item" href="manage.php?user_id=<?php echo $user_id ?>">Manage Profile</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>

@@ -53,12 +53,12 @@
                                             <div class="col-lg-6 offset-lg-3">
                                                 <div class="form-group">
                                                     <label>Receive Date</label>
-                                                    <input id="rcv_datepicker" name="rcv_date" type="text" class="form-control mb-3" placeholder="Please input the Receive Date">
+                                                    <input id="rcv_datepicker" required="required" name="rcv_date" type="text" class="form-control mb-3" placeholder="Please input the Receive Date">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label>Return Date</label>
-                                                    <input id="rtn_datepicker" name="rtn_date" type="text" class="form-control mb-3" placeholder="Please input the Return Date">
+                                                    <input id="rtn_datepicker" required="required" name="rtn_date" type="text" class="form-control mb-3" placeholder="Please input the Return Date">
                                                 </div>
 
                                                 <div class="row">
@@ -75,8 +75,8 @@
                             if (isset($_POST['proceed'])){
                                 $book_id = $_POST['book_id'];
                                 $user_id = $_SESSION['user_id'];
-                                $rcv_date = $_POST['rcv_date'];
-                                $rtn_date = $_POST['rtn_date'];
+                                $rcv_date = date('Y-m-d',strtotime($_POST['rcv_date']));
+                                $rtn_date = date('Y-m-d',strtotime($_POST['rtn_date']));
 
                                 if (!empty($rcv_date) && !empty($rtn_date)){
                                     $sql = "insert into booking_list(user_id,book_id,rcv_date,rtn_date,booking_date)
@@ -84,6 +84,7 @@
                                     $bookingData = mysqli_query($db, $sql);
 
                                     if ($bookingData){
+                                        $_SESSION['status'] = 'Your booking is pending for Admin approval. Please contact with the admin for your book physically. Thankyou!!';
                                         header("Location: order-history.php");
                                     } else{
                                         die("MySQLi Error". mysqli_error($db));

@@ -2,18 +2,18 @@
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-dark text-muted">
     <!-- Section: Links  -->
-    <section class="mt-5">
-        <div class="container text-center text-md-start mt-5">
+    <section class="">
+        <div style="position: relative" class="container text-center text-md-start">
             <!-- Grid row -->
-            <div class="row mt-3">
+            <div class="row mt-5">
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto">
                     <!-- Content -->
                     <h6 class="text-uppercase fw-bold mb-4 mt-3">
-                        <i class="fas fa-gem me-3"></i>Online Library
+                        <i class="fas fa-building"></i> Company
                     </h6>
                     <p>
-                      A online library
+                      An online library
                     </p>
                 </div>
                 <!-- Grid column -->

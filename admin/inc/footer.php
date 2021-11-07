@@ -29,7 +29,7 @@
 <script src="plugins/chart.js/Chart.min.js"></script>
 
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard2.js"></script>
 
@@ -39,6 +39,27 @@
     CKEDITOR.replace( 'editor' );
 </script>
 
+<!--datatabel-->
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+
+<!--Datepicker-->
+
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataSearch').DataTable();
+    } );
+</script>
+
+<script>
+    $( function() {
+        $( "#datepicker" ).datepicker();
+        $( "#rtn_datepicker" ).datepicker();
+    } );
+</script>
 <?php
     ob_end_flush();
 ?>

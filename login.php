@@ -31,7 +31,7 @@
                             $hassPassword = sha1($password);
                         }
 
-                        $sql = "select * from user where email='$email'";
+                        $sql = "select * from user where email='$email' and status=1";
                         $userData = mysqli_query($db, $sql);
                         while ($row = mysqli_fetch_assoc($userData)) {
                             $_SESSION['user_id'] = $row['user_id'];
