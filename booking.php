@@ -84,7 +84,7 @@
                                     $bookingData = mysqli_query($db, $sql);
 
                                     if ($bookingData){
-                                        $_SESSION['status'] = 'Your booking is pending for Admin approval. Please contact with the admin for your book physically. Thankyou!!';
+                                        $_SESSION['msg'] = 'Your booking is pending for Admin approval. Please contact with the admin for your book physically. Thankyou!!';
                                         header("Location: order-history.php");
                                     } else{
                                         die("MySQLi Error". mysqli_error($db));

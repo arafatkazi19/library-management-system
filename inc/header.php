@@ -2,6 +2,9 @@
 session_start();
 ob_start();
 include "admin/inc/db.php";
+//if (empty($_SESSION['user_id']) || empty($_SESSION['email']) || empty($_SESSION['role'])!=1){
+//    header("Location: index.php");
+//}
 
 ?>
 <!doctype html>
@@ -109,7 +112,7 @@ include "admin/inc/db.php";
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <li><a class="dropdown-item" href="order-history.php">Booking Item List</a></li>
-                                            <li><a class="dropdown-item" href="manage.php?user_id=<?php echo $user_id ?>">Manage Profile</a></li>
+                                            <li><a class="dropdown-item" href="manage.php?uid=<?php echo $user_id ?>">Manage Profile</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                                         </ul>

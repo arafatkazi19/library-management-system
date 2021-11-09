@@ -69,9 +69,9 @@
                                             <td>
                                                 <?php
                                                 if (!empty($row['image'])) { ?>
-                                                    <img src="dist/img/users/<?php echo $row['image']?>" width="100px">
+                                                    <img src="dist/img/users/<?php echo $row['image']?>" length="100px" width="100px">
                                                 <?php    } else { ?>
-                                                    <img src="dist/img/avatar5.png" width="80px">
+                                                    <img src="dist/img/avatar5.png" length="100px" width="100px">
                                                 <?php   }
                                                 ?>
                                             </td>
@@ -355,7 +355,7 @@
                            $image = $_FILES['image']['name'];
                            $image_temp = $_FILES['image']['tmp_name'];
 
-                           if (!empty($password) && !empty($image)){
+                           if (!empty($password) && !empty($repassword) && !empty($image)){
                                 if ($password==$repassword){
                                     $hassedPassword = sha1($password);
                                 }
@@ -383,7 +383,7 @@
 
 
                            }
-                           elseif (!empty($password) && empty($image)){
+                           elseif (!empty($password) && !empty($repassword) && empty($image)){
                                    if ($password==$repassword){
                                        $hassedPassword = sha1($password);
                                    }

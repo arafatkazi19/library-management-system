@@ -48,6 +48,7 @@
                         if ($password == $repassword)
                             $hasshedpassword = sha1($password);
 
+
                         $sql = "insert into user(fullname,email,password,join_date)
                                             VALUES('$fullname','$email','$hasshedpassword',now())";
                         $userData = mysqli_query($db, $sql);
