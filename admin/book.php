@@ -43,7 +43,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-dark table-bordered table-hover table-striped">
+                                <table id="dataSearch" class="table table-dark table-bordered table-hover table-striped">
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>

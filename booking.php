@@ -108,7 +108,11 @@
             <?php include "inc/sidebar.php"?>
             <!--Side bar ends-->
 
+
         </div>
     </div>
 </section>
+
+
+
 <?php include "inc/footer.php"?>

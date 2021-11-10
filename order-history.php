@@ -106,4 +106,5 @@
         </div>
     </div>
 </section>
+<?php unset($_SESSION['msg']); ?>
 <?php include "inc/footer.php"?>

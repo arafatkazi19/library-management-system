@@ -107,7 +107,7 @@
                                             <td>
                                                 <?php
                                                 if ($status == 1){ ?>
-                                                    <span class="badge bg-warning">Active Order</span>
+                                                    <span class="badge bg-success">Active Order</span>
                                                 <?php } else if($status == 2){ ?>
                                                     <span class="badge bg-warning">Returned</span>
                                                 <?php } else if($status == 3){ ?>
@@ -153,7 +153,6 @@
                                         ?>
 
                                         <form method="post" action="order-details.php?do=Update">
-
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
@@ -175,13 +174,14 @@
                                                                     <option value="4" <?php echo ($status == 4) ? 'selected' : ''; ?>>Pending</option>
                                                                 </select>
                                                             </div>
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="order_id" value="<?php echo $id?>">
+                                                                <input type="hidden" name="book_id" value="<?php echo $book_id?>">
+                                                                <input type="submit" name="updateOrder" class="btn btn-success" value="Update Order">
+                                                            </div>
                                                         </div>
 
-                                                        <div class="form-group">
-                                                            <input type="hidden" name="order_id" value="<?php echo $id?>">
-                                                            <input type="hidden" name="book_id" value="<?php echo $book_id?>">
-                                                            <input type="submit" name="updateOrder" class="btn btn-success" value="Update Order">
-                                                        </div>
+
                                                 </div>
                                         </form>
 
@@ -193,10 +193,51 @@
                                     if (isset($_POST['updateOrder'])) {
                                         $order_id = $_POST['order_id'];
                                         $book_id = $_POST['book_id'];
-                                        $rcv_date = $_POST['rcv_date'];
-                                        $rtn_date = $_POST['rtn_date'];
+                                        $rcv_date = date('Y-m-d',strtotime($_POST['rcv_date']));
+                                        $rtn_date = date('Y-m-d',strtotime($_POST['rtn_date']));
                                         $status = $_POST['status'];
+                                        $sql = "update booking_list set rcv_date='$rcv_date',rtn_date='$rtn_date',status='$status' 
+                                    where id='$order_id'";
+                                        $updateRes = mysqli_query($db, $sql);
+                                        $quantity=0;
+                                        if ($status == 1) {
 
+
+                                            //Update number of books after status change
+                                            $sql2 = "select * from books where id='$book_id'";
+                                            $updateRes2 = mysqli_query($db, $sql2);
+                                            while ($r = mysqli_fetch_assoc($updateRes2)) {
+                                                $quantity = $r['quantity'];
+                                                $quantity--;
+                                            }
+                                            $bookQuanSql = "update books set quantity='$quantity' where id='$book_id'";
+                                            $bookQuanUpdate = mysqli_query($db, $bookQuanSql);
+
+                                            if ($bookQuanUpdate)
+                                                header("Location: order-details.php?do=Manage");
+                                            else
+                                                die("MySQLi Error" . mysqli_error($db));
+
+                                        } elseif ($status==2){
+//                                            $sql = "update booking_list set rcv_date='$rcv_date',rtn_date='$rtn_date',status='$status'
+//                                    where id='$order_id'";
+//                                            $updateRes = mysqli_query($db, $sql);
+
+                                            //Update number of books after status change
+                                            $sql2 = "select * from books where id='$book_id'";
+                                            $updateRes2 = mysqli_query($db, $sql2);
+                                            while ($r = mysqli_fetch_assoc($updateRes2)) {
+                                                $quantity = $r['quantity'];
+                                                $quantity++;
+                                            }
+                                            $bookQuanSql = "update books set quantity='$quantity' where id='$book_id'";
+                                            $bookQuanUpdate = mysqli_query($db, $bookQuanSql);
+
+                                            if ($bookQuanUpdate)
+                                                header("Location: order-details.php?do=Manage");
+                                            else
+                                                die("MySQLi Error" . mysqli_error($db));
+                                        }
                                     }
                                 }
                                 ?>
