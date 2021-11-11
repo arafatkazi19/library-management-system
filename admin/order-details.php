@@ -196,28 +196,18 @@
                                         $rcv_date = date('Y-m-d',strtotime($_POST['rcv_date']));
                                         $rtn_date = date('Y-m-d',strtotime($_POST['rtn_date']));
                                         $status = $_POST['status'];
-                                        $sql = "update booking_list set rcv_date='$rcv_date',rtn_date='$rtn_date',status='$status' 
-                                    where id='$order_id'";
+                                        $sql = "update booking_list set rcv_date='$rcv_date',rtn_date='$rtn_date',status='$status' where id='$order_id'";
                                         $updateRes = mysqli_query($db, $sql);
-                                        $quantity=0;
+
                                         if ($status == 1) {
-
-
                                             //Update number of books after status change
                                             $sql2 = "select * from books where id='$book_id'";
                                             $updateRes2 = mysqli_query($db, $sql2);
                                             while ($r = mysqli_fetch_assoc($updateRes2)) {
                                                 $quantity = $r['quantity'];
-                                                $quantity--;
+
                                             }
-                                            $bookQuanSql = "update books set quantity='$quantity' where id='$book_id'";
-                                            $bookQuanUpdate = mysqli_query($db, $bookQuanSql);
-
-                                            if ($bookQuanUpdate)
-                                                header("Location: order-details.php?do=Manage");
-                                            else
-                                                die("MySQLi Error" . mysqli_error($db));
-
+                                            $quantity--;
                                         } elseif ($status==2){
 //                                            $sql = "update booking_list set rcv_date='$rcv_date',rtn_date='$rtn_date',status='$status'
 //                                    where id='$order_id'";
@@ -228,16 +218,18 @@
                                             $updateRes2 = mysqli_query($db, $sql2);
                                             while ($r = mysqli_fetch_assoc($updateRes2)) {
                                                 $quantity = $r['quantity'];
-                                                $quantity++;
-                                            }
-                                            $bookQuanSql = "update books set quantity='$quantity' where id='$book_id'";
-                                            $bookQuanUpdate = mysqli_query($db, $bookQuanSql);
 
-                                            if ($bookQuanUpdate)
-                                                header("Location: order-details.php?do=Manage");
-                                            else
-                                                die("MySQLi Error" . mysqli_error($db));
+                                            }
+                                            $quantity++;
                                         }
+
+                                        $bookQuanSql = "update books set quantity='$quantity' where id='$book_id'";
+                                        $bookQuanUpdate = mysqli_query($db, $bookQuanSql);
+
+                                        if ($bookQuanUpdate)
+                                            header("Location: order-details.php?do=Manage");
+                                        else
+                                            die("MySQLi Error" . mysqli_error($db));
                                     }
                                 }
                                 ?>

@@ -79,10 +79,15 @@
                                                     <span class="badge bg-warning">Pending</span>
                                                 <?php } ?>
                                             </td>
+                                            <?php if ($status!=2 && $status!=1 && $status!=3){ ?>
                                             <td>
-                                                Edit
+                                                <div class="tbl-action">
+                                                    <ul>
+                                                        <li class="text-center"><a href="user-change-status.php?booking_id=<?php echo $id ?>"><i class="fa fa-edit"></i></a></li>
+                                                    </ul>
+                                                </div>
                                             </td>
-
+                                            <?php } ?>
                                         </tr>
                                     <?php }
                                 }
