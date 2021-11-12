@@ -61,7 +61,7 @@ include "admin/inc/db.php";
                                         $countSubMenu = mysqli_num_rows($subMenu);
                                         if ($countSubMenu == 0){ ?>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="category.php?category=<?php echo $pCatName; ?>"><?php echo $pCatName; ?></a>
+                                                <a class="nav-link" href="category.php?category=<?php echo $pCatName; ?>&catid=<?php echo $pCatId ?>"><?php echo $pCatName; ?></a>
                                             </li>
                                    <?php     } else { ?>
                                             <li class="nav-item dropdown">
@@ -73,7 +73,7 @@ include "admin/inc/db.php";
                                                         while ($row2 = mysqli_fetch_assoc($subMenu)){
                                                             $sCatId = $row2['category_id'];
                                                             $sCatName = $row2['category_name']; ?>
-                                                            <li><a class="dropdown-item" href="category.php?category=<?php echo $sCatName; ?>"><?php echo $sCatName; ?></a></li>
+                                                            <li><a class="dropdown-item" href="sub-category.php?category=<?php echo $sCatName; ?>&subcatid=<?php echo $sCatId; ?>"><?php echo $sCatName; ?></a></li>
                                                      <?php   }
                                                     ?>
                                                 </ul>
