@@ -120,10 +120,32 @@
                                                 <div class="tbl-action">
                                                     <ul>
                                                         <li><a href="order-details.php?do=Edit&o_id=<?php echo $id ?>"><i class="fa fa-edit"></i></a></li>
-                                                        <li><a href="" data-toggle="modal" data-target="#deleteOrder"><i class="fa fa-trash"></i></a></li>
+                                                        <?php if ($status==2 || $status==3){ ?>
+                                                        <li><a href="" data-toggle="modal" data-target="#deleteOrder<?php echo $id ?>"><i class="fa fa-trash"></i></a></li>
+                                                        <?php } ?>
                                                     </ul>
                                                 </div>
                                             </td>
+
+                                            <!-- Modal Starts -->
+                                            <div class="modal fade" id="deleteOrder<?php echo $id?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <ul style="list-style: none;">
+                                                                <li style="display: inline;margin: 0px 7px"><a class="btn btn-danger" href="order-details.php?do=Delete&order_id=<?php echo $id?>">Confirm</a></li>
+                                                                <li style="display: inline;margin: 0px 7px"><a class="btn btn-success" href="" data-dismiss="modal">Cancel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </tr>
                                     <?php }
@@ -230,6 +252,19 @@
                                             header("Location: order-details.php?do=Manage");
                                         else
                                             die("MySQLi Error" . mysqli_error($db));
+                                    }
+                                } elseif ($do == 'Delete'){
+                                    if (isset($_GET['order_id'])) {
+                                        $id = $_GET['order_id'];
+
+                                        $sql = "DELETE from booking_list where id='$id'";
+                                        $res = mysqli_query($db, $sql);
+
+                                        if ($res) {
+                                            header("Location: order-details.php?do=Manage");
+                                        } else{
+                                            die("MySQLi Error ". mysqli_error($db));
+                                        }
                                     }
                                 }
                                 ?>
